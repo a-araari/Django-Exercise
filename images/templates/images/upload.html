@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Upload Image - Image Gallery
+{% endblock %}
+
+{% block header %}
+    <h1>Welcome to the Image Gallery - Upload Image</h1>
+{% endblock %}
+
+{% block content %}
+    <h2>Upload Image</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Upload</button>
+    </form>
+
+    <!-- Display user images -->
+    <h2>Your Images</h2>
+    <ul>
+        {% for image in user_images %}
+            <li>
+                <a href="{% url 'images:detail' image.slug %}">
+                    <img src="{{ image.image.url }}" alt="{{ image.url }}" height="100">
+                </a>
+            </li>
+        {% empty %}
+            You have not uploaded any images yet.
+        {% endfor %}
+    </ul>
+
+    <!-- Display other images -->
+    <h2>Other Images</h2>
+    <ul>
+        {% for image in other_images %}
+            <li>
+                <a href="{% url 'images:detail' image.slug %}">
+                    <img src="{{ image.image.url }}" alt="{{ image.url }}" height="100">
+                </a>
+            </li>
+        {% empty %}
+            No other images available.
+        {% endfor %}
+    </ul>
+{% endblock %}
